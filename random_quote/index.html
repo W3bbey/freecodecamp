@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+
+<html>
+<body>
+
+<script type="text/javascript">
+   
+   var movieOne = {
+       movie: "The Matrix",
+       date: "1999",
+       quote: '"Jujutsu?  I\'m going to learn jujutsu?"'
+   };
+
+   var movieTwo = {
+       movie: "Dirty Dancing",
+       date: "1987",
+       quote: '"Nobody puts baby in the corner."'
+   };
+
+   var movieThree = {
+       movie: "Dumb and Dumber",
+       date: "1994",
+       quote: '"You sold my dead bird to a blind kid?!"'
+   };
+
+   var movieFour = {
+       movie: "The Shining",
+       date: "1980",
+       quote: '"Here\'s Johnny!"'
+   };
+
+   var movieArray = [
+       movieOne, 
+       movieTwo, 
+       movieThree,
+       movieFour
+    ];
+
+   //var arr = [quoteOne.quote, quoteTwo.quote, quoteThree.quote, quoteFour.quote];
+   var randomMovie = movieArray[Math.floor(Math.random()*movieArray.length)];
+   var randomNum = Math.floor(Math.random()*movieArray.length);
+   
+   function myFunction() {
+       
+        // We've got a random number, no greater than the length of the array
+        // and we only want it generate when the page is loaded
+        
+        // testing returning objects...
+        //return document.getElementById("quote").innerHTML = randomMovie.date;
+        //return document.getElementById("quote").innerHTML = randomItem.quote;
+        
+        document.getElementById("movie").innerHTML = movieArray[randomNum].movie;
+        document.getElementById("date").innerHTML = movieArray[randomNum].date;
+        document.getElementById("quote").innerHTML = movieArray[randomNum++].quote; // the ++ so it cycles through the array
+        
+        // check to see if randomNum is too long for the array, then start at the beginining if true
+        if (randomNum > movieArray.length - 1) {
+            randomNum = 0;
+        }
+
+   }
+
+</script>
+
+
+<style>
+    
+    .quote-box {
+       
+        text-align: center;
+    }
+
+    .quote {
+        text-align: center;
+    }
+
+    
+    .movie {
+        text-align: right;
+       
+    }
+    
+    .date {
+        text-align: right;
+        
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+    }
+
+    .details {
+        text-align: right;
+    }
+
+</style>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="quote-box col-md-6 col-md-offset-3">
+            <h1>Random Quote</h1>
+            <button class="btn-primary" onclick="myFunction()">Get a quote</button>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h2 id="quote" class="quote"></h2>
+        </div>
+        
+        <div class="col-md-3 col-md-offset-3">
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a>
+            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>    
+        
+        <div class="col-md-3">
+            <p id="movie" class="movie"></p> 
+            <p id="date" class="date"></p>
+        
+        </div>   
+    </div>
+
+  
+</div>
+
+</body>
+</html>

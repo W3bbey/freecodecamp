@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<html>
+    
+    <script>
+
+        $(document).ready(function () {
+            $("#getMessage").on("click", function() {
+             
+               $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=35&lon=139", function (json) {
+                    
+                    var weather = new Array();
+                    weather.push(json);
+                    console.log(weather);
+                    var str = JSON.stringify(json);
+                    var diced = str.split(",");
+
+                    $(".message").html(str);
+                
+
+                    
+                    /* var items = [];
+                    $.each( json, function ( key, val) {
+                        items.push( "<li id='" + key + "'>" + val + "</li>" );
+                    });
+                    $( "<ul/>", {
+                        "class": "my-new-list",
+                        html: items.join( "" ) 
+                    }).appendTo( "body");
+                    */
+                
+                /*    $.ajax({
+                    method: 'GET',
+                    url: 'https://fcc-weather-api.glitch.me/api/current?lat=35&lon=139',
+                    success: function(response) {
+                        var obj = JSON.stringify(response);
+                        $(".message").html(obj);
+                        
+                        //console.log('It worked!');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                }) */
+               
+                    
+                    
+                }); 
+            });
+        });
+
+
+    </script>
+
+    <body>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" style="text-align: center">
+                    
+                    <p class="well message">This is where the message goes</p>
+                    <button id="getMessage" class="btn btn-primary">CLICK MEH</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+
+
+</html>
+
+
+<!--
+USAGE:
+Use the endpoint: https://fcc-weather-api.glitch.me/. Use this endpoint to get the weather at a location. To prevent abuses this server accepts GET requests only, and serves only the route /api/current?lon=:longitude&lat=:latitude. Images links are included in the JSON under weather[0].icon. This is enough to complete the challenge. 
+Example: 
+Request: https://fcc-weather-api.glitch.me/api/current?lat=35&lon=139 
+Response: { "coord":{ "lon":159, "lat":35 }, "weather":[ { "id":500, "main":"Rain", "description":"light rain", "icon":"https://cdn.glitch.com/6e8889e5-7a72-48f0-a061-863548450de5%2F10n.png?1499366021399" } ], "base":"stations", "main":{ "temp":22.59, "pressure":1027.45, "humidity":100, "temp_min":22.59, "temp_max":22.59, "sea_level":1027.47, "grnd_level":1027.45 }, "wind":{ "speed":8.12, "deg":246.503 }, "rain":{ "3h":0.45 }, "clouds":{ "all":92 }, "dt":1499521932, "sys":{ "message":0.0034, "sunrise":1499451436, "sunset":1499503246 }, "id":0, "name":"", "cod":200 }
+
+-->
+
+
