@@ -34,7 +34,7 @@
 
         $(document).ready(function () {
           
-            document.getElementById("body").classList.add('sunny_bg');
+            
             
             $("#getMessage").on("click", function() {
 
@@ -52,7 +52,7 @@
                     var maxFarenheit = maxTemp * 9 / 5 + 32;
                     var minFarenheit = minTemp * 9 / 5 + 32;
 
-                    $(".message").html("Temp: " + farenheit + "<br>" + lat + "<br>" + lon);
+                    $(".message").html("Temp: " + farenheit/* + "<br>" + lat + "<br>" + lon*/);
                  
 
                    
@@ -64,13 +64,10 @@
 
     </script>
 
-<<<<<<< HEAD
     <body >
-=======
     <body class="bg">
 
         
->>>>>>> 09df2956d556c6aec6a0e7309161768916929da3
         
         <div class="container-fluid">
             <div class="row">
@@ -107,26 +104,18 @@
 </html>
 
 <style>
-<<<<<<< HEAD
-=======
     
-    .sunny_bg {
+    /*.sunny_bg {
         background-color: yellow;
     }
     .bg {
-        /* the image used */
         background-image: url("thomas-kelley-194243-unsplash.jpg");
-
-        /* Full height */
         height: 100%;
-
-        /* Center and scale the image */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
->>>>>>> 09df2956d556c6aec6a0e7309161768916929da3
-    
+    */    
     body {
         background-image: url("glenn-carstens-peters-112923-unsplash.jpg");
         background-position: center top;
