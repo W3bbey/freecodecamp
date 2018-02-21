@@ -22,9 +22,9 @@
         window.onload = function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-                
+                console.log("Geolocation acquired.");
             } else {
-                
+                console.log("Cannot get geolocation");
             }
         }
         function showPosition(position) {
@@ -34,11 +34,11 @@
 
         $(document).ready(function () {
           
-            
+            document.getElementById("body").classList.add('sunny_bg');
             
             $("#getMessage").on("click", function() {
 
-
+                
                $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&" + "lon=" + lon + "", function (json) {
                     
                     var weather = new Array();
@@ -54,6 +54,8 @@
 
                     $(".message").html("Temp: " + farenheit + "<br>" + lat + "<br>" + lon);
                  
+
+                   
                     
                 });
             });
@@ -62,7 +64,13 @@
 
     </script>
 
+<<<<<<< HEAD
     <body >
+=======
+    <body class="bg">
+
+        
+>>>>>>> 09df2956d556c6aec6a0e7309161768916929da3
         
         <div class="container-fluid">
             <div class="row">
@@ -99,6 +107,25 @@
 </html>
 
 <style>
+<<<<<<< HEAD
+=======
+    
+    .sunny_bg {
+        background-color: yellow;
+    }
+    .bg {
+        /* the image used */
+        background-image: url("thomas-kelley-194243-unsplash.jpg");
+
+        /* Full height */
+        height: 100%;
+
+        /* Center and scale the image */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+>>>>>>> 09df2956d556c6aec6a0e7309161768916929da3
     
     body {
         background-image: url("glenn-carstens-peters-112923-unsplash.jpg");
