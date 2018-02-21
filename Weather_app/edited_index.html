@@ -22,9 +22,9 @@
         window.onload = function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
-                
+                console.log("Geolocation acquired.");
             } else {
-                
+                console.log("Cannot get geolocation");
             }
         }
         function showPosition(position) {
@@ -34,11 +34,11 @@
 
         $(document).ready(function () {
           
-            
+            document.getElementById("body").classList.add('sunny_bg');
             
             $("#getMessage").on("click", function() {
 
-
+                
                $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&" + "lon=" + lon + "", function (json) {
                     
                     var weather = new Array();
@@ -54,6 +54,8 @@
 
                     $(".message").html("Temp: " + farenheit + "<br>" + lat + "<br>" + lon);
                  
+
+                   
                     
                 });
             });
@@ -63,6 +65,8 @@
     </script>
 
     <body class="bg">
+
+        
         
         <div class="container-fluid">
             <div class="row">
@@ -97,6 +101,10 @@
 </html>
 
 <style>
+    
+    .sunny_bg {
+        background-color: yellow;
+    }
     .bg {
         /* the image used */
         background-image: url("thomas-kelley-194243-unsplash.jpg");
