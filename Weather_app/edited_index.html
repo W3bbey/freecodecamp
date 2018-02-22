@@ -27,18 +27,16 @@
                 console.log("Cannot get geolocation");
             }
         }
+        
         function showPosition(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude; 
         }
 
         $(document).ready(function () {
-          
-            
             
             $("#getMessage").on("click", function() {
-
-                
+       
                $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&" + "lon=" + lon + "", function (json) {
                     
                     var weather = new Array();
@@ -52,10 +50,23 @@
                     var maxFarenheit = maxTemp * 9 / 5 + 32;
                     var minFarenheit = minTemp * 9 / 5 + 32;
 
-                    $(".message").html("Temp: " + farenheit/* + "<br>" + lat + "<br>" + lon*/);
-                 
-
+                    
                    
+
+                    function myFunction() {
+                        if (farenheit >= 50) {
+                            console.log("Yep, if statement triggering");
+                            document.getElementById("body").classList.toggle("sunny_body");
+                        } else if (farenheit < 50) {
+                            console.log("Yep, if statement triggering");
+                            document.getElementById("body").classList.toggle("snowy_body");
+                        } else {
+                            console.log("Yep, if statement triggering");
+                            document.getElementById("body").classList.toggle("sunny_bg"); // just for testing - remomve this garbage
+                        }
+                    }
+
+                    $(".message").html("Temp: " + farenheit/* + "<br>" + lat + "<br>" + lon*/);
                     
                 });
             });
@@ -65,7 +76,7 @@
     </script>
 
     <body >
-    <body class="bg">
+    <body class="snowy_body">
 
         
         
@@ -105,23 +116,24 @@
 
 <style>
     
-    /*.sunny_bg {
+    .sunny_bg {
         background-color: yellow;
     }
-    .bg {
+    
+    .snowy_body {
         background-image: url("thomas-kelley-194243-unsplash.jpg");
         height: 100%;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
-    */    
-    body {
+        
+    .sunny_body {
         background-image: url("glenn-carstens-peters-112923-unsplash.jpg");
         background-position: center top;
         background-size: 100% auto;
     } 
-    
+
     /*
     .bottom_right {
         position: fixed;
