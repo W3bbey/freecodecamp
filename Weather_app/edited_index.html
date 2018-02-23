@@ -50,6 +50,7 @@
                     var maxFarenheit = maxTemp * 9 / 5 + 32;
                     var minFarenheit = minTemp * 9 / 5 + 32;
 
+                    console.log(farenheit);
                     function myFunction() {
                         if (farenheit >= 50) {
                             console.log("Yep, if statement triggering");
@@ -62,6 +63,7 @@
                             document.getElementById("body").classList.toggle("sunny_bg"); // just for testing - remomve this garbage
                         }
                     }
+                    myFunction();
 
                     $(".message").html("Temp: " + farenheit/* + "<br>" + lat + "<br>" + lon*/);
                     
