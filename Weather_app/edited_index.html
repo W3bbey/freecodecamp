@@ -49,11 +49,12 @@
                     var minTemp = weather[0].main["temp_min"];
                     var loc = weather[0].name;
                     
-                    var farenheit =  myTemp * 9 / 5 + 32;
+                    var farenheit =  Math.round(myTemp * 9 / 5 + 32);
+                    var celsius = Math.round(myTemp);
                     var maxFarenheit = maxTemp * 9 / 5 + 32;
                     var minFarenheit = minTemp * 9 / 5 + 32;
 
-                    function myFunction() {
+                    function backgroundFunction() {
                         if (farenheit >= 80) {
                             document.getElementById("weather_background").className = "beach_body";
                         } else if (farenheit < 80 && farenheit > 32) {
@@ -62,9 +63,9 @@
                             document.getElementById("weather_background").className = "snowy_body";
                         }
                     }
-                    myFunction();
+                    backgroundFunction();
 
-                    $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "</strong>");
+                    $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
                     
                 });
             });
@@ -81,15 +82,22 @@
                 <div class="col-md-6 col-md-offset-3" style="text-align: center">
                 
                     <div class="col-md-8 col-md-offset-2">
-                        <button id="getTemp" class="btn btn-primary" style="margin: 10px;">Get Temp</button>  
-                        <p class="well temp_display">Click to get local temperature</p>
-                    </div>
+                    <button id="getTemp" class="btn btn-primary" style="margin: 10px;">Get Temp</button>
+                    
+                    <p class="well temp_display">Click to get local temperature</p>
+
+                    <label class="switch" style="margin-top: 10px;">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>  
 
                 </div>
+
             </div>
         </div>
+    </div>
 
-    </body >
+</body >
 
 </html>
 
@@ -132,5 +140,64 @@
         background-size: cover;
     }
     
+
+/* begin switch CSS */
+    .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    }
+
+    .switch input {display:none;}
+
+    .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    }
+
+    .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    }
+
+    input:checked + .slider {
+    background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+    border-radius: 34px;
+    }
+
+    .slider.round:before {
+    border-radius: 50%;
+    }
+/* End switch CSS */
+
 
 </style>
