@@ -27,8 +27,7 @@
                     
                     <p class="well temp_display">Click to get local temperature</p>
 
-                    <p>Switch to degrees celsius</p>
-                    <label class="switch" style="margin-top: 10px;">
+                    <label class="switch">
                         <input type="checkbox" id="degreesCelsius" onclick="tempTypeFunction()">
                         <span class="slider round"></span>
                     </label>  
@@ -176,6 +175,7 @@
                 //---------------------------------------------------------------------
                 weather = new Array();
                 weather.push(json);
+                console.log(weather);
                 myTemp = weather[0].main["temp"];
                 loc = weather[0].name;
                 farenheit = Math.round(myTemp * 9 / 5 + 32);
