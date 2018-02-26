@@ -15,87 +15,7 @@
 </head>
 
 <html>
-    
-    <script>
-        
-        var lat = "";
-        var lon = "";
-        var loc = "space"; // global var with fun placeholder
-        var celsius = "-271"; // global var with fun placeholder
-        var farenheit = "-455"; // global var with fun placeholder
-        var weather = "";
-        var mytemp = "";
-        var checkBox = "";
-        
-
-        window.onload = function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
-                console.log("Geolocation acquired.");
-            } else {
-                console.log("Cannot get geolocation");
-            }
-        }
-        
-        function showPosition(position) {
-            lat = position.coords.latitude;
-            lon = position.coords.longitude; 
-        }
-
-        $(document).ready(function () {
-            
-            $("#getTemp").on("click", function() {
-       
-               $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&" + "lon=" + lon + "", function (json) {
-                    
-                    //---------------------------------------------------------------------
-                    // Declare variables
-                    //---------------------------------------------------------------------
-                    weather = new Array();
-                    weather.push(json);
-                    myTemp = weather[0].main["temp"];
-                    loc = weather[0].name;
-                    farenheit = Math.round(myTemp * 9 / 5 + 32);
-                    celsius = Math.round(myTemp); // already displays in celsius, however the equation is (F - 32) * 5/9 = C
-                    
-                    //---------------------------------------------------------------------
-                    // Display temperature in the "temp_display" well
-                    //---------------------------------------------------------------------
-                    tempTypeFunction();
-                    
-                    //---------------------------------------------------------------------
-                    // start function to adjust background based on temperature
-                    //---------------------------------------------------------------------
-                    function backgroundFunction() {
-                        if (farenheit >= 80) {
-                            document.getElementById("weather_background").className = "beach_body";
-                        } else if (farenheit < 80 && farenheit > 32) {
-                            document.getElementById("weather_background").className = "sunny_body";
-                        } else if (farenheit <= 32) {
-                            document.getElementById("weather_background").className = "snowy_body";
-                        }
-                    }
-                    backgroundFunction();
-                    
-                });
-            });
-        });
-     
-        //---------------------------------------------------------------------
-        // Switch to celsius 
-        //---------------------------------------------------------------------
-        function tempTypeFunction() {
-            checkBox = document.getElementById("degreesCelsius");
-            if (checkBox.checked == true) {
-                $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
-            } else {
-                $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
-                }
-        }
-
-    </script>
-
-    <body >
+   
     <body id="weather_background">
 
         <div class="container-fluid">
@@ -218,3 +138,82 @@
 
 
 </style>
+
+<script>
+        
+    var lat = "";
+    var lon = "";
+    var loc = "space"; // global var with fun placeholder
+    var celsius = "-271"; // global var with fun placeholder
+    var farenheit = "-455"; // global var with fun placeholder
+    var weather = "";
+    var mytemp = "";
+    var checkBox = "";
+    
+
+    window.onload = function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            console.log("Geolocation acquired.");
+        } else {
+            console.log("Cannot get geolocation");
+        }
+    }
+    
+    function showPosition(position) {
+        lat = position.coords.latitude;
+        lon = position.coords.longitude; 
+    }
+
+    $(document).ready(function () {
+        
+        $("#getTemp").on("click", function() {
+   
+           $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&" + "lon=" + lon + "", function (json) {
+                
+                //---------------------------------------------------------------------
+                // Declare variables
+                //---------------------------------------------------------------------
+                weather = new Array();
+                weather.push(json);
+                myTemp = weather[0].main["temp"];
+                loc = weather[0].name;
+                farenheit = Math.round(myTemp * 9 / 5 + 32);
+                celsius = Math.round(myTemp); // already displays in celsius, however the equation is (F - 32) * 5/9 = C
+                
+                //---------------------------------------------------------------------
+                // Display temperature in the "temp_display" well
+                //---------------------------------------------------------------------
+                tempTypeFunction();
+                
+                //---------------------------------------------------------------------
+                // start function to adjust background based on temperature
+                //---------------------------------------------------------------------
+                function backgroundFunction() {
+                    if (farenheit >= 80) {
+                        document.getElementById("weather_background").className = "beach_body";
+                    } else if (farenheit < 80 && farenheit > 32) {
+                        document.getElementById("weather_background").className = "sunny_body";
+                    } else if (farenheit <= 32) {
+                        document.getElementById("weather_background").className = "snowy_body";
+                    }
+                }
+                backgroundFunction();
+                
+            });
+        });
+    });
+ 
+    //---------------------------------------------------------------------
+    // Switch to celsius 
+    //---------------------------------------------------------------------
+    function tempTypeFunction() {
+        checkBox = document.getElementById("degreesCelsius");
+        if (checkBox.checked == true) {
+            $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
+        } else {
+            $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
+            }
+    }
+
+</script>
