@@ -20,6 +20,12 @@
         
         var lat = "";
         var lon = "";
+        var loc = "space"; // global var with fun placeholder
+        var celsius = "-271"; // global var with fun placeholder
+        var farenheit = "-455"; // global var with fun placeholder
+        var weather = "";
+        var mytemp = "";
+        var checkBox = "";
         
 
         window.onload = function getLocation() {
@@ -45,23 +51,18 @@
                     //---------------------------------------------------------------------
                     // Declare variables
                     //---------------------------------------------------------------------
-                    var weather = new Array();
+                    weather = new Array();
                     weather.push(json);
-                    console.log(weather[0]);
-                    var myTemp = weather[0].main["temp"];
-                    var maxTemp = weather[0].main["temp_max"];
-                    var minTemp = weather[0].main["temp_min"];
-                    var loc = weather[0].name;
+                    myTemp = weather[0].main["temp"];
+                    loc = weather[0].name;
+                    farenheit = Math.round(myTemp * 9 / 5 + 32);
+                    celsius = Math.round(myTemp); // already displays in celsius, however the equation is (F - 32) * 5/9 = C
                     
-                    var farenheit =  Math.round(myTemp * 9 / 5 + 32);
-                    var celsius = Math.round(myTemp);
-                    var maxFarenheit = maxTemp * 9 / 5 + 32;
-                    var minFarenheit = minTemp * 9 / 5 + 32;
                     //---------------------------------------------------------------------
                     // Display temperature in the "temp_display" well
                     //---------------------------------------------------------------------
-                    $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
-                    //$(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
+                    tempTypeFunction();
+                    
                     //---------------------------------------------------------------------
                     // start function to adjust background based on temperature
                     //---------------------------------------------------------------------
@@ -76,8 +77,6 @@
                     }
                     backgroundFunction();
                     
-                  
-
                 });
             });
         });
@@ -85,15 +84,12 @@
         //---------------------------------------------------------------------
         // Switch to celsius 
         //---------------------------------------------------------------------
-        function myFunction() {
-
-            var checkBox = document.getElementById("degreesCelsius");
-            var text = document.getElementById("text");
+        function tempTypeFunction() {
+            checkBox = document.getElementById("degreesCelsius");
             if (checkBox.checked == true) {
-                //$(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
-                text.style.display = "block";
+                $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
             } else {
-                    text.style.display = "none";
+                $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
                 }
         }
 
@@ -111,15 +107,12 @@
                     
                     <p class="well temp_display">Click to get local temperature</p>
 
-                    
+                    <p>Switch to degrees celsius</p>
                     <label class="switch" style="margin-top: 10px;">
-                        <input type="checkbox" id="degreesCelsius" onclick="myFunction()">
+                        <input type="checkbox" id="degreesCelsius" onclick="tempTypeFunction()">
                         <span class="slider round"></span>
                     </label>  
-                    <p>Click for degrees celsius</p>
-
-                    <p id="text" style="display:none">Checkbox is CHECKED!</p>
-
+                    
                 </div>
 
             </div>
@@ -143,6 +136,7 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        
     }
         
     .sunny_body {
@@ -151,15 +145,8 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        
     } 
-    
-    .cloudy_body {
-        background-image: url("billy-huynh-327754-unsplash.jpg");
-        height: 100%;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;         
-    }
 
     .beach_body {
         background-image: url("nicolai-durbaum-33773-unsplash.jpg");
@@ -167,6 +154,7 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        
     }
     
 
