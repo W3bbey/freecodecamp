@@ -20,6 +20,7 @@
         
         var lat = "";
         var lon = "";
+        
 
         window.onload = function getLocation() {
             if (navigator.geolocation) {
@@ -41,6 +42,9 @@
        
                $.getJSON("https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&" + "lon=" + lon + "", function (json) {
                     
+                    //---------------------------------------------------------------------
+                    // Declare variables
+                    //---------------------------------------------------------------------
                     var weather = new Array();
                     weather.push(json);
                     console.log(weather[0]);
@@ -53,7 +57,14 @@
                     var celsius = Math.round(myTemp);
                     var maxFarenheit = maxTemp * 9 / 5 + 32;
                     var minFarenheit = minTemp * 9 / 5 + 32;
-
+                    //---------------------------------------------------------------------
+                    // Display temperature in the "temp_display" well
+                    //---------------------------------------------------------------------
+                    $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
+                    //$(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
+                    //---------------------------------------------------------------------
+                    // start function to adjust background based on temperature
+                    //---------------------------------------------------------------------
                     function backgroundFunction() {
                         if (farenheit >= 80) {
                             document.getElementById("weather_background").className = "beach_body";
@@ -64,18 +75,32 @@
                         }
                     }
                     backgroundFunction();
-
-                    $(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + farenheit + "°F" + "</strong>");
                     
+                  
+
                 });
             });
         });
+     
+        //---------------------------------------------------------------------
+        // Switch to celsius 
+        //---------------------------------------------------------------------
+        function myFunction() {
 
+            var checkBox = document.getElementById("degreesCelsius");
+            var text = document.getElementById("text");
+            if (checkBox.checked == true) {
+                //$(".temp_display").html("In " + loc + " the temperature is: " + "<strong>" + celsius + "°C" + "</strong>");
+                text.style.display = "block";
+            } else {
+                    text.style.display = "none";
+                }
+        }
 
     </script>
 
     <body >
-    <body id="weather_background" class="cloudy_body">
+    <body id="weather_background">
 
         <div class="container-fluid">
             <div class="row">
@@ -86,10 +111,14 @@
                     
                     <p class="well temp_display">Click to get local temperature</p>
 
+                    
                     <label class="switch" style="margin-top: 10px;">
-                        <input type="checkbox">
+                        <input type="checkbox" id="degreesCelsius" onclick="myFunction()">
                         <span class="slider round"></span>
                     </label>  
+                    <p>Click for degrees celsius</p>
+
+                    <p id="text" style="display:none">Checkbox is CHECKED!</p>
 
                 </div>
 
@@ -104,10 +133,10 @@
 <style>
     
     body, html {
-    height: 100%;
-    margin: 0;
+        height: 100%;
+        margin: 0;
     }
-    
+
     .snowy_body {
         background-image: url("ales-krivec-4176-unsplash.jpg");
         height: 100%;
@@ -143,59 +172,59 @@
 
 /* begin switch CSS */
     .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
     }
 
     .switch input {display:none;}
 
     .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
     }
 
     .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .3s;
+        transition: .3s;
     }
 
     input:checked + .slider {
-    background-color: #2196F3;
+        background-color: green;
     }
 
     input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+        box-shadow: 0 0 1px green;
     }
 
     input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
     }
 
     /* Rounded sliders */
     .slider.round {
-    border-radius: 34px;
+        border-radius: 34px;
     }
 
     .slider.round:before {
-    border-radius: 50%;
+        border-radius: 50%;
     }
 /* End switch CSS */
 
