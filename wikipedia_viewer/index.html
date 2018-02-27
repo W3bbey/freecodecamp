@@ -16,6 +16,8 @@
 
 <html>
 
+    <input type="text" name="search">
+    <input id="getQuery" class="btn btn-primary" type="submit" value="submit">
 
 </html>
 
@@ -26,6 +28,14 @@
 
 
 <script>
+
+    $(document).ready(function() {
+        $("#getQuery").on("click", function(){
+            $.getJSON("https://en.wikipedia.org/w/api.php", function(json){
+                
+            });
+        });
+    });
 
 </script>
 
