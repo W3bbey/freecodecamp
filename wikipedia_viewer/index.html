@@ -29,10 +29,27 @@
 
 <script>
 
+// Attempting AJAX
+/* mw.loader.using( 'mediawiki.ForeignApi' ).done( function () {
+    var api = new mw.ForeignApi( 'https://en.wikipedia.org/w/api.php' );
+    api.get( {
+        action: 'query',
+        meta: 'userinfo'
+    } ).done( function ( data ) {
+        alert( 'Foreign user ' + data.query.userinfo.name + 
+            ' (ID ' + data.query.userinfo.id + ')' );
+    } );
+} );
+ */
+ 
+ 
+
+ // Not functional at the moment
     $(document).ready(function() {
         $("#getQuery").on("click", function(){
-            $.getJSON("https://en.wikipedia.org/w/api.php", function(json){
+            $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=cats"/* include search here */, function(json){
                 
+                console.log(json);
             });
         });
     });
