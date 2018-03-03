@@ -19,6 +19,9 @@
     <input id="wikiQuery" type="text" name="search">
     <input id="getQuery" class="btn btn-primary" type="submit" value="submit">
 
+    <p>Link below:</p>
+    <p id="link"></p>
+
 </html>
 
 
@@ -31,10 +34,16 @@
 
     // Global vars defined here
     var mainSearch = "";
+    var pageIdentifier = "";
+    var title = "";
+    var linkSpill = "";
+    var wikiObjects = [];
 
+
+    // This function accepts the search result of the text entered into the submit field and assigns it to "mainSearch"
+    // mainSearch is called in the meaty function below it.
     function getSubmit() {
         mainSearch = document.getElementById("wikiQuery").value;
-        //alert("Here's the value of your search: " + mainSearch)
     }
 
     // Not functional at the moment
@@ -45,6 +54,49 @@
                 $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=" + mainSearch/* include search here */, function(json){
                     
                     console.log(json);
+                    //page = json.query.search[0].pageid; // commented until i'm certain the solution can be found with a for loop for each result returned
+
+                    // title is useful to create a clean hyperlink
+                    title = json.query.search[0].title;
+
+                    // I wanted to assign this to a variable to make it cleaner, not sure if it's of any use
+                    linkSpill = $("#link").html("Here's the page ID in a link: " + "<a href='http://en.wikipedia.org/?curid=" + pageIdentifier + "'>" + title + "</a>");
+
+
+                    // This for loop is intended to push each of the Page IDs to the wikiObjects array
+                    // I'd like to push out a link for each of the 10 results.    
+                    for (var i = 0; i < 10; i++) {
+                        pageIdentifier = json.query.search[i].pageid;
+                        wikiObjects.push(pageIdentifier)
+                        
+                        //linkspill;
+
+
+                    }
+                    
+                    console.log(wikiObjects);
+                    
+
+
+                    // How to do this as a loop?
+                    /* page = json.query.search[1].pageid
+
+                    page = json.query.search[2].pageid
+
+                    page = json.query.search[3].pageid
+
+                    page = json.query.search[4].pageid
+
+                    page = json.query.search[5].pageid
+
+                    page = json.query.search[6].pageid
+
+                    page = json.query.search[7].pageid
+
+                    page = json.query.search[8].pageid
+
+                    page = json.query.search[9].pageid
+ */
                 });
             });
         });
