@@ -19,8 +19,8 @@
     <input id="wikiQuery" type="text" name="search">
     <input id="getQuery" class="btn btn-primary" type="submit" value="submit">
 
-    <p>Link below:</p>
-    <p id="link"></p>
+    <p>Links below:</p>
+    <p id="linksInHtml"></p>
 
 </html>
 
@@ -36,8 +36,11 @@
     var mainSearch = "";
     var pageIdentifier = "";
     var title = "";
-    var linkSpill = "";
+    var output = document.getElementById("links");
     var wikiObjects = [];
+    var baseLink = "http://en.wikipedia.org/?curid=";
+    var searchLinks = "";
+    var clickableLinks = "";
 
 
     // This function accepts the search result of the text entered into the submit field and assigns it to "mainSearch"
@@ -46,57 +49,43 @@
         mainSearch = document.getElementById("wikiQuery").value;
     }
 
+    // This function is meant to clear the search history
+     function clearLinksInHtml() {
+        //$("#linksInHtml").html(clickableLinks);
+        //clickableLinks = ""; // I don't believe this is needed anymore
+        document.getElementById("linksInHtml").innerHTML = "";
+        
+    }
+
     // Not functional at the moment
         $(document).ready(function() {
             $("#getQuery").on("click", function(){
+                
+                // clear any previous search
+                clearLinksInHtml();
+                
+                // get the value from the submit field
                 getSubmit();
                 
                 $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=" + mainSearch/* include search here */, function(json){
-                    
-                    console.log(json);
-                    //page = json.query.search[0].pageid; // commented until i'm certain the solution can be found with a for loop for each result returned
-
+                   
                     // title is useful to create a clean hyperlink
                     title = json.query.search[0].title;
-
-                    // I wanted to assign this to a variable to make it cleaner, not sure if it's of any use
-                    linkSpill = $("#link").html("Here's the page ID in a link: " + "<a href='http://en.wikipedia.org/?curid=" + pageIdentifier + "'>" + title + "</a>");
-
-
+                    
                     // This for loop is intended to push each of the Page IDs to the wikiObjects array
                     // I'd like to push out a link for each of the 10 results.    
                     for (var i = 0; i < 10; i++) {
                         pageIdentifier = json.query.search[i].pageid;
-                        wikiObjects.push(pageIdentifier)
-                        
-                        //linkspill;
+                        searchLinks = baseLink.concat(pageIdentifier);
+                        wikiObjects.push(searchLinks);
 
-
+                        clickableLinks += "<a href=" + wikiObjects[i] + ">" + wikiObjects[i] + "</a>" + "<br>";
                     }
+                    
+                    $("#linksInHtml").html(clickableLinks);
                     
                     console.log(wikiObjects);
                     
-
-
-                    // How to do this as a loop?
-                    /* page = json.query.search[1].pageid
-
-                    page = json.query.search[2].pageid
-
-                    page = json.query.search[3].pageid
-
-                    page = json.query.search[4].pageid
-
-                    page = json.query.search[5].pageid
-
-                    page = json.query.search[6].pageid
-
-                    page = json.query.search[7].pageid
-
-                    page = json.query.search[8].pageid
-
-                    page = json.query.search[9].pageid
- */
                 });
             });
         });
