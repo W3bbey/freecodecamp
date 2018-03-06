@@ -54,10 +54,9 @@
         //$("#linksInHtml").html(clickableLinks);
         //clickableLinks = ""; // I don't believe this is needed anymore
         document.getElementById("linksInHtml").innerHTML = "";
-        
-    }
+     }
 
-    // Not functional at the moment
+
         $(document).ready(function() {
             $("#getQuery").on("click", function(){
                 
@@ -80,13 +79,17 @@
                         wikiObjects.push(searchLinks);
 
                         clickableLinks += "<a href=" + wikiObjects[i] + ">" + wikiObjects[i] + "</a>" + "<br>";
+                        
                     }
                     
                     $("#linksInHtml").html(clickableLinks);
-                    
-                    console.log(wikiObjects);
+                    clickableLinks = ""; // Setting this to an empty variable does not return any text.
+                    //console.log(wikiObjects);
                     
                 });
+                
+                
+                
             });
         });
 
