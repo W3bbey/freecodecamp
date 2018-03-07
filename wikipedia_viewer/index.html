@@ -17,7 +17,10 @@
 <html>
 
     <input id="wikiQuery" type="text" name="search">
+    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+
     <input id="getQuery" class="btn btn-primary" type="submit" value="submit">
+    
 
     <p>Links below:</p>
     <p id="linksInHtml"></p>
@@ -58,6 +61,14 @@
 
 
         $(document).ready(function() {
+            
+            
+            $("#wikiQuery").keyup(function() {
+                if (event.keycode === 13) {
+                    $("#getQuery").click()
+                }    
+            });
+            
             $("#getQuery").on("click", function(){
                 
                 // clear any previous search
@@ -86,11 +97,11 @@
                     clickableLinks = ""; // Setting this to an empty variable does not return any text.
                     //console.log(wikiObjects);
                     
-                });
-                
-                
-                
+                }); 
             });
+
+
+          
         });
 
 </script>
