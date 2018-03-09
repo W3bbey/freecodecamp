@@ -12,10 +12,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <html>
-
+<body>
     <input id="wikiQuery" type="text" name="search">
     <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 
@@ -25,94 +26,94 @@
     <p>Links below:</p>
     <p id="linksInHtml"></p>
 
+
+</body>
 </html>
-
-
-<style>
-    
-</style>
 
 
 <script>
 
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        // Global vars defined here
-        var mainSearch = "";
-        var pageIdentifier = "";
-        var title = "";
-        var output = document.getElementById("links");
-        var wikiObjects = [];
-        var baseLink = "http://en.wikipedia.org/?curid=";
-        var searchLinks = "";
-        var clickableLinks = "";
+    // Global vars defined here
+    var mainSearch = "";
+    var pageIdentifier = "";
+    var title = "";
+    var output = document.getElementById("links");
+    var wikiObjects = [];
+    var baseLink = "http://en.wikipedia.org/?curid=";
+    var searchLinks = "";
+    var clickableLinks = "";
 
 
-        // This function accepts the search result of the text entered into the submit field and assigns it to "mainSearch"
-        // mainSearch is called in the meaty function below it.
-        function getSubmit() {
-            mainSearch = document.getElementById("wikiQuery").value;
-        }
+    // This function accepts the search result of the text entered into the submit field and assigns it to "mainSearch"
+    // mainSearch is called in the meaty function below it.
+    function getSubmit() {
+        mainSearch = document.getElementById("wikiQuery").value;
+    }
 
-        // This function is meant to clear the search history
-        function clearLinksInHtml() {
-            //$("#linksInHtml").html(clickableLinks);
-            clickableLinks = ""; // I don't believe this is needed anymore
-            document.getElementById("linksInHtml").innerHTML = "";
-        }
+    // This function is meant to clear the search history
+    function clearLinksInHtml() {
+        //$("#linksInHtml").html(clickableLinks);
+        clickableLinks = ""; // I don't believe this is needed anymore
+        document.getElementById("linksInHtml").innerHTML = "";
+    }
 
-        function startSearch() {
-            // clear any previous search
-            //clearLinksInHtml();
-                    
-            // get the value from the submit field
-            getSubmit();
+    function startSearch() {
+        // clear any previous search
+        //clearLinksInHtml();
+                
+        // get the value from the submit field
+        getSubmit();
+        
+        // Query the API with the contents of the search field
+        $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=" + mainSearch/* include search here */, function(json){
             
-            // Query the API with the contents of the search field
-            $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=" + mainSearch/* include search here */, function(json){
-                
-                // title is useful to create a clean hyperlink
-                title = json.query.search[0].title;
-                
-                // This for loop is intended to push each of the Page IDs to the wikiObjects array
-                // I'd like to push out a link for each of the 10 results.    
-                for (var i = 0; i < 10; i++) {
-                    pageIdentifier = json.query.search[i].pageid;
-                    searchLinks = baseLink.concat(pageIdentifier);
-                    wikiObjects.push(searchLinks);
-                    clickableLinks += "<a href=" + wikiObjects[i] + ">" + wikiObjects[i] + "</a>" + "<br>";
-                }
-
-                $("#linksInHtml").html(clickableLinks);
-                
-                clickableLinks = ""; // Setting this to an empty variable prevents text from accumulating
-                mainSearch = "";
-                //console.log(wikiObjects);
-                
-            });
-        }
-
-
-        // Accept a keypress of ENTER
-        $("#wikiQuery").keypress(function(e) {
+            // title is useful to create a clean hyperlink
+            title = json.query.search[0].title;
             
-            var key = e.which;
-            if (key == 13) {
-                $('input[name=butAssignProd]').click();
-                
-                
-                startSearch();
+            // This for loop is intended to push each of the Page IDs to the wikiObjects array
+            // I'd like to push out a link for each of the 10 results.    
+            for (var i = 0; i < 10; i++) {
+                pageIdentifier = json.query.search[i].pageid;
+                searchLinks = baseLink.concat(pageIdentifier);
+                wikiObjects.push(searchLinks);
+                clickableLinks += "<a href=" + wikiObjects[i] + ">" + wikiObjects[i] + "</a>" + "<br>";
             }
+
+            $("#linksInHtml").html(clickableLinks);
+            
+            clickableLinks = ""; // Setting this to an empty variable prevents text from accumulating
+            mainSearch = "";
+            //console.log(wikiObjects);
             
         });
+    }
+
+
+    // Accept a keypress of ENTER
+    $("#wikiQuery").keypress(function(e) {
         
-        // Accept clicking the submit button
-        $("#getQuery").on("click", function(){
-            
+        var key = e.which;
+        if (key == 13) {
+            $('input[name=butAssignProd]').click();
             startSearch();
-                
-        });    
+            console.log("you entered!");
+        }
+        
     });
+    
+    // Accept clicking the submit button
+    $("#getQuery").on("click", function(){
+        
+        startSearch();
+        console.log("You clicked!");
+            
+    });    
+});
 
 </script>
 
+
+<style>
+</style>
