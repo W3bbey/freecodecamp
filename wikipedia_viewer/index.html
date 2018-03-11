@@ -17,14 +17,21 @@
 
 <html>
 <body>
-    <input id="wikiQuery" type="text" name="search">
-    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
-
-    <input id="getQuery" class="btn btn-primary" type="submit" value="submit">
     
+	
+	<div class="container">
+		
+		<div class="row col-md-6 col-md-offset-3" style="text-align: center; margin-top: 20px;	">
+			<input id="wikiQuery" type="text" name="search">
+			<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 
-    <p>Links below:</p>
-    <p id="linksInHtml"></p>
+		    	<button id="getQuery" class="btn btn-primary" type="submit" value="submit">Search</button>
+		    
+
+		    	<p>Links below:</p>
+		    	<p id="linksInHtml"></p>
+		</div>
+	</div>
 
 
 </body>
@@ -61,7 +68,7 @@ $(document).ready(function() {
 
     function startSearch() {
         // clear any previous search
-        //clearLinksInHtml();
+        // clearLinksInHtml();
                 
         // get the value from the submit field
         getSubmit();
