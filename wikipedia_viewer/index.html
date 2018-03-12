@@ -22,7 +22,7 @@
 	<div class="container">
 		
 		<div class="row col-md-6 col-md-offset-3" style="text-align: center; margin-top: 20px;	">
-			<input id="wikiQuery" type="text" name="search">
+			<input id="wikiQuery" type="text" name="search" value="" autofocus="autofocus">
 			<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 
 		    	<button id="getQuery" class="btn btn-primary" type="submit" value="submit">Search</button>
@@ -51,8 +51,8 @@ $(document).ready(function() {
     var baseLink = "http://en.wikipedia.org/?curid=";
     var searchLinks = "";
     var clickableLinks = "";
-
-
+	
+	
     // This function accepts the search result of the text entered into the submit field and assigns it to "mainSearch"
     // mainSearch is called in the meaty function below it.
     function getSubmit() {
