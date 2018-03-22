@@ -19,17 +19,18 @@
 <body>
     
 	
-	<div class="container">
+	<div class="container" style="margin-top: 20px;">
 		
 		<div class="row col-md-6 col-md-offset-3" style="text-align: center; margin-top: 20px;	">
 			<input id="wikiQuery" type="text" name="search" value="" autofocus="autofocus"></input>
 			<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 
 		    	<button id="getQuery" class="btn btn-primary" type="submit">Search</button>
-		    
+                <a target="_blank" href="https://en.wikipedia.org/wiki/Special:Random" class="btn btn-primary">Random</a>
+                
 
-		    	<p>Links below:</p>
-		    	<p id="linksInHtml"></p>
+                <p id="linksInHtml" style="margin: 20px; text-align: left;"></p>
+                <!-- Altering this element can style the blob of text that comes through in 'clickableLinks'-->
 		</div>
 	</div>
 
@@ -46,37 +47,21 @@ $(document).ready(function() {
     var mainSearch = "";
     var pageIdentifier = "";
     var title = "";
-    //var output = document.getElementById("links");
     var wikiObjects = [];
     var baseLink = "http://en.wikipedia.org/?curid=";
     var searchLinks = "";
     var clickableLinks = "";
-	
-	
-
-
-	// Consider reloading the page with an if / else statement
-	// if: if the "linksInHtml" != null, reload
-	// else: do nothing
-	// this is an effort to only clear the links if they've populated
-	// I want to reload the page if I've already done a search 
-	function reloadPage() {	
-		location.reload();
-	}
 
     // This function accepts the search result of the text entered into the submit field and assigns it to "mainSearch"
     // mainSearch is called in the meaty function below it.
     function getSubmit() {
         mainSearch = document.getElementById("wikiQuery").value;
     }
-
+ 
     // This function is meant to clear the search history
     function clearLinksInHtml() {
-        //$("#linksInHtml").html(clickableLinks);
-        //clickableLinks = ""; // I don't believe this is needed anymore
-	console.log(document.getElementById("linksInHtml").innerHTML)        
-	document.getElementById("linksInHtml").innerHTML = "";
-	
+        console.log(document.getElementById("linksInHtml").innerHTML)        
+        document.getElementById("linksInHtml").innerHTML = "";       
     }
 
     function startSearch() {
@@ -87,25 +72,38 @@ $(document).ready(function() {
         // Query the API with the contents of the search field
         $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&utf8=1&srsearch=" + mainSearch/* include search here */, function(json){
             
-            // title is useful to create a clean hyperlink
-            title = json.query.search[0].title;
-            
             // This for loop is intended to push each of the Page IDs to the wikiObjects array
             // I'd like to push out a link for each of the 10 results.    
             for (var i = 0; i < 10; i++) {
+                
+                
+                // The following try, catch is meant to catch any search that doesn't return a valid title
+                try 
+                {
+                    title = json.query.search[i].title; // title is useful to create a clean hyperlink    
+                } catch(e)
+                {
+                    wikiObjects = [];
+                    clickableLinks = ""
+                    alert("Search results incomplete");
+                }
+                
                 pageIdentifier = json.query.search[i].pageid;
                 searchLinks = baseLink.concat(pageIdentifier);
                 wikiObjects.push(searchLinks);
-                clickableLinks += "<a href=" + wikiObjects[i] + ">" + wikiObjects[i] + "</a>" + "<br>";
+                clickableLinks += "<a id='clickableLinks' style='' href=" + wikiObjects[i] + ">" + title + "</a>" + "<br>";
             }
-
+            
             $("#linksInHtml").html(clickableLinks);
-            
-            clickableLinks = ""; // Setting this to an empty variable prevents text from accumulating
-            mainSearch = "";
-            //console.log(wikiObjects);
 
+            //$("#linksInHtml").css(/* class name, */ /* class condition */);
+            clickableLinks = ""; // Setting this to an empty variable prevents text from accumulating
             
+            // My god this is vital if I want to do more than one search.
+            // Who would have thought resetting this array to null... or whatever a blank array is, would be necessary in this way.
+            wikiObjects = [];
+            
+            console.log(json);
         });
     }
 
@@ -119,6 +117,14 @@ $(document).ready(function() {
 	
             startSearch();
             console.log("you entered!");
+            if(document.getElementById("linksInHtml").innerHTML != "") 
+            {
+                $("#linksInHtml").html("");
+            } else 
+            {
+                //console.log("There is no text");
+            }
+            
         }
         
     });
@@ -128,12 +134,33 @@ $(document).ready(function() {
         
         startSearch();
         console.log("You clicked!");
+        if(document.getElementById("linksInHtml").innerHTML != "") 
+            {
+                $("#linksInHtml").html("");
+            } else 
+            {
+                //console.log("There is no text");
+            }
             
     });    
+
 });
 
 </script>
 
 
 <style>
+
+    #clickableLinks {
+        
+     font-size: 18px;
+   
+    }
+
+    body {
+        background-color: #ddd;
+        border-style: solid;
+        padding: 20px;
+        margin: 20px;
+    }
 </style>
