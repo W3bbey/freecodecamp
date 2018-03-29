@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<html>
+    
+<script>
+	
+	// Global vars
+	var stream_status = "";
+	var channel_names = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
+	var streamers = "";
+	var html = "";
+	var data = "";
+	var isMature = "";
+	var isNotMature = "";
+	
+	$(document).ready(function () {
+		
+
+		// Could I just loop through all of these options for different endpoints?
+		// - /users/:user
+		// - /channels/:channel
+		// - /streams/:stream
+		// Looking for the particular data that shows whether or not a stream is active...
+		// Log everything for now!
+		//------------------------------------------------------------------------------------------------------
+		$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[0], function(data) {
+			console.log(data);
+		});
+		$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channel_names[0], function(data) {
+			console.log(data);
+		});
+		$.getJSON('https://wind-bow.glitch.me/twitch-api/users/' + channel_names[0], function(data) {
+			console.log(data);
+		});
+		//------------------------------------------------------------------------------------------------------
+
+		$("#getMessage").on("click", function() {
+			
+			html = "";
+			
+			for (var i = 0; i < 9; i++) {
+				
+				$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[i], function(data) {
+					
+					
+					// Things to figure out:
+					// 1. Need to figure how to check if a stream is actually active or not.
+
+					// Things I want
+					// - logo
+					// Things I need:
+					// - Name
+					// - url
+					// - active vs. inactive
+
+					// Some ways to manipulate the data!  Woohoo! (great deal)
+					html += "<div class='streamer'>"
+					// Here's an option where the name and image are on the same line:
+					// html += "<p>" + data.name + "<img src= '" + data.logo + "'" + "height='50' width='50'><p>"
+					html += "<img src= '" + data.logo + "'" + "height='50' width='50'>";
+					html += "<p>" + data.name + "<p>";
+					html += "<p>Followers: " + data.followers + "</p>";
+					
+					if (data.mature == true) {
+						html += "<p>Mature Channel: yes</p>";
+					} else {
+						html += "<p>Mature Channel: no</p>";
+					}
+					
+					if (data.status == null) {
+						html += "<a href='" + data.url + "'>Status: none</a>"
+					} else {
+						html += "<a href='" + data.url + "'>" + data.status + "</a>";
+					}
+					
+					html += "</div>"
+					$("#message").html(html);
+
+					/* stream_status = data.status;
+
+					if (data.status/* (stream_status != null) {
+						console.log(data.name + " is active!");
+					} else {
+						console.log(data.name + " is not active!");
+					} */
+
+				});
+			
+			}
+			
+			console.log(data);
+		});
+
+	/* 	function matureCheck() {
+			if (data.mature == true) {
+				return "This channel may contain mature content";
+			} else {
+				return "This channel is not labeled mature";
+			}
+		} */
+	});
+
+/* https://wind-bow.glitch.me/twitch-api/channels/freecodecamp */
+/* ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"] */
+</script>
+
+    <body>
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3" style="text-align: center">
+                    
+                    <p id="message" class="well">This is where the message goes</p>
+                    <button id="getMessage" class="btn btn-primary">CLICK MEH</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+
+
+</html>
+
+
+
+<style>
+	.streamer {
+		color: black;
+		text-align: left;
+	}
+</style>
