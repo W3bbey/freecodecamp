@@ -35,15 +35,13 @@
 		// Looking for the particular data that shows whether or not a stream is active...
 		// Log everything for now!
 		//------------------------------------------------------------------------------------------------------
-		$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[0], function(data) {
+		/* $.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[0], function(data) {
 			console.log(data);
 		});
-		$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channel_names[0], function(data) {
-			console.log(data);
-		});
+		
 		$.getJSON('https://wind-bow.glitch.me/twitch-api/users/' + channel_names[0], function(data) {
 			console.log(data);
-		});
+		}); */
 		//------------------------------------------------------------------------------------------------------
 
 		$("#getMessage").on("click", function() {
@@ -51,6 +49,11 @@
 			html = "";
 			
 			for (var i = 0; i < 9; i++) {
+				
+				// Looks like this link with the streams is the magic link...
+				$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channel_names[i], function(data) {
+					console.log(data);
+				});
 				
 				$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[i], function(data) {
 					
