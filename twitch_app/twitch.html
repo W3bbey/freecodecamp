@@ -18,10 +18,12 @@
 	
 	// Global vars
 
-	var channel_names = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
-	//var channel_names = ["OgamingSC2", "NoObjectiveGamingAU"];
+	var channelNames = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
+	//var channelNames = ["OgamingSC2", "NoObjectiveGamingAU"];
 	var liveChannels = [];
-	var offlineChannels = [];
+	var liveChannelNames = [];
+	var liveChannelObjects = [];
+	var offlineChannelNames = [];
 	var streamDetails = [];
 	var channelDetails = [];
 	var html = "";
@@ -32,15 +34,15 @@
 
 
 		// how about a button to get the status rather than document.ready?
-		for (var i = 0; i < channel_names.length;i++) {
+		for (var i = 0; i < channelNames.length;i++) {
 			
-			$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channel_names[i], function(streamData) {
+			$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
 				
 				streamDetails.push(streamData);
-			
+				
 			});
 			
-			$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[i], function(channelData) {
+			$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
 				
 				channelDetails.push(channelData);
 			});
@@ -48,45 +50,69 @@
 		
 		$("#getMessage").on("click", function() {
 			
-			// For some reason this stuff can't go in the document.ready place...		
-			// Maybe try to clean up liveChannels and offlineChannels to push only the 
-			// name of the channel to an array so I know I have an array only containing the names
-			// of the channels separated by live and offline.
-			
+			// These are the live channels, but it contains all the data
 			liveChannels = streamDetails.filter(function(channel){
-				return(channel.stream != null)
-				
+				return(channel.stream != null);
 			});
 			
-			offlineChannels = streamDetails.filter(function(channel){
-				return(channel.stream == null);
-			});
+			// Attempting to create objects for each live channel
+			for (var i = 0; i < liveChannels.length; i++){
+				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
+				var liveObject = { //consider calling it something like liveChannel1, 2, 3...
+					"Name": liveChannels[i].stream.channel.display_name,
+					"logo": liveChannels[i].stream.channel.logo,
+					"link": liveChannels[i].stream.channel.url,
+					"viewers": liveChannels[i].stream.viewers
+				}
+				liveChannelObjects.push(liveObject);
+			}
+			console.log(liveChannelObjects);
 
-			console.log(liveChannels);
-			console.log(offlineChannels)
-			
-			for (var i = 0; i < channel_names.length; i++){
-				//alert(channel_names[i]);
-				
+			// return the channels that are not live and add them to the array offlineChannelNames
+			for (var i = 0; i < liveChannelNames.length; i++){
+				offlineChannelNames = channelNames.filter(function(val){
+					return(val != liveChannelNames[i]);
+				});
 			}
 			
+			
+			//console.log("All channels: " + channelNames);
+			console.log(offlineChannelNames)
+			//console.log(streamDetails);
+			//console.log(channelDetails);
+			console.log(liveChannelNames);
 
-			$("#message").html();
+			// Cycle Live channels through stream details for the following pices:
+			// - icon
+			// - Display name as a hyperlink
+			// - viewers <-- only stream detail can provide
+			// Need this to cycle through, then pull out the piece that matches
+			// Thinking shift / push if not a match, shift only when matches
+			// Need to cycle through all of the channels... unless a better idea comes along
+			// what about creating objects?
+			/* for (var i = 0; i < streamDetails.length; i++) {
+				if ()
 
+			} */
+			
+			html += "<div class='streamer'>"
+			$("#message").html(liveChannelObjects[0]);
+			//$("#message").html("Live Channels: " + offlineChannelNames);
+		
+		
 		});
-
-	
-
+			
+		
 		/* $("#getMessage").on("click", function() {
 			
 			html = "";
 			
 			
 
-			for (var i = 0; i < channel_names.length; i++) {
+			for (var i = 0; i < channelNames.length; i++) {
 				
 				
-				$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channel_names[i], function(streamData) {
+				$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
 
 					console.log(streamData);
 
@@ -108,8 +134,8 @@
 				
 					} else {
 						//alert(i);
-						//alert(channel_names[i]);
-						$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channel_names[i], function(channelData) {
+						//alert(channelNames[i]);
+						$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
 							html += "<div class='streamer'>"
 							html += "<img src= '" + channelData.logo + "'" + "height='50' width='50'>";
 							html += "<p>" + channelData.display_name + "</p>";
