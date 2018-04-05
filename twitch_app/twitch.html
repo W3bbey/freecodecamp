@@ -70,19 +70,30 @@
 
 			// return the channels that are not live and add them to the array offlineChannelNames
 			for (var i = 0; i < liveChannelNames.length; i++){
-				offlineChannelNames = channelNames.filter(function(val){
-					return(val != liveChannelNames[i]);
-				});
+				
+				for (var j = 0; j < channelNames.length; j++){
+					if (liveChannelNames[i] == channelNames[j]){
+						var shift = channelNames.shift()
+						offlineChannelNames.push(shift);
+					} else {
+						var shift = channelNames.shift();
+						channelNames.push(shift);
+					}
+				}
+
+				// offlineChannelNames = channelNames.filter(function(val){
+				// 	return(val != liveChannelNames[i]);
+				// });
 				
 			}
 			
 		
 			
-			//console.log("All channels: " + channelNames);
-			console.log("Offline channels: " + offlineChannelNames)
+			console.log("All channels: " + channelNames);
+			console.log("offline channels: " + offlineChannelNames)
 			//console.log(streamDetails);
 			//console.log(channelDetails);
-			console.log("Live channels: " + liveChannelNames);
+			console.log("live channels: " + liveChannelNames);
 
 			// Cycle Live channels through stream details for the following pices:
 			// - icon
