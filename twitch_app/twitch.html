@@ -23,11 +23,26 @@
 	var liveChannels = [];
 	var liveChannelNames = [];
 	var liveChannelObjects = [];
+	var liveObject = "";
+	var offlineChannels = [];
 	var offlineChannelNames = [];
 	var streamDetails = [];
 	var channelDetails = [];
 	var html = "";
 
+	function checkChannelNames(val) {
+		for (var i = 0; i < channelNames.length; i++){
+			if (val == channelNames[0]){
+				var shift = channelNames.shift()
+				offlineChannelNames.push(shift);
+			} else {
+				var shift = channelNames.shift()
+				
+				channelNames.push(shift);
+				
+			}
+		}
+	}
 
 
 	$(document).ready(function () {
@@ -55,65 +70,55 @@
 				return(channel.stream != null);
 			});
 			
+		
 			// Attempting to create objects for each live channel
 			for (var i = 0; i < liveChannels.length; i++){
 				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
-				var liveObject = { //consider calling it something like liveChannel1, 2, 3...
+				liveObject = { //consider calling it something like liveChannel1, 2, 3...
 					"Name": liveChannels[i].stream.channel.display_name,
 					"logo": liveChannels[i].stream.channel.logo,
 					"link": liveChannels[i].stream.channel.url,
 					"viewers": liveChannels[i].stream.viewers
-				}
+				};
 				liveChannelObjects.push(liveObject);
-			}
-			console.log(liveChannelObjects);
+			};
 
-			// return the channels that are not live and add them to the array offlineChannelNames
-			for (var i = 0; i < liveChannelNames.length; i++){
-				
-				for (var j = 0; j < channelNames.length; j++){
-					if (liveChannelNames[i] == channelNames[j]){
-						var shift = channelNames.shift()
-						offlineChannelNames.push(shift);
-					} else {
+			// The inverse of liveChannels does not work becaues I still don't have a channel name
+			
+			for (var j = 0; j < liveChannelNames.length; j++){
+				alert("starting outter for loop...");
+				for (var i = 0; i < channelNames.length; i++){
+					alert("starting inner for loop");
+					if (liveChannelNames[0] == channelNames[0]){
+						alert(channelNames[0] + " was the golden ticket");
 						var shift = channelNames.shift();
+						offlineChannelNames.push(shift);
+						
+					} else {
+						alert("shifting " + channelNames[0]);
+						var shift = channelNames.shift();
+						alert ("pushing " + shift);
 						channelNames.push(shift);
 					}
 				}
-
-				// offlineChannelNames = channelNames.filter(function(val){
-				// 	return(val != liveChannelNames[i]);
-				// });
-				
 			}
 			
-		
 			
-			console.log("All channels: " + channelNames);
-			console.log("offline channels: " + offlineChannelNames)
-			//console.log(streamDetails);
-			//console.log(channelDetails);
-			console.log("live channels: " + liveChannelNames);
 
-			// Cycle Live channels through stream details for the following pices:
-			// - icon
-			// - Display name as a hyperlink
-			// - viewers <-- only stream detail can provide
-			// Need this to cycle through, then pull out the piece that matches
-			// Thinking shift / push if not a match, shift only when matches
-			// Need to cycle through all of the channels... unless a better idea comes along
-			// what about creating objects?
-			/* for (var i = 0; i < streamDetails.length; i++) {
-				if ()
-
-			} */
 			
-			html += "<div class='streamer'>"
-			$("#message").html(liveChannelObjects[0]);
-			//$("#message").html("Live Channels: " + offlineChannelNames);
-		
-		
+			html += "<div>";
+			for (var i = 0; i < liveChannelNames.length; i++) {
+				html += "<p>" + liveChannelNames[i] + "</p>";
+			}
+			html += "</div>";
+
+			$("#message").html(html);
+			console.log(liveChannelNames);
+			console.log(offlineChannelNames);
+
 		});
+
+	});
 			
 		
 		/* $("#getMessage").on("click", function() {
@@ -161,7 +166,6 @@
 				});
 			};
 		}); */
-	});
 
 </script>
 
