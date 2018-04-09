@@ -18,31 +18,21 @@
 	
 	// Global vars
 
-	var channelNames = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
-	//var channelNames = ["OgamingSC2", "NoObjectiveGamingAU"];
+	// Channel names in the following array must match case with the display name that will be pulled later
+	var channelNames = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "FreeCodeCamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
 	var liveChannels = [];
 	var liveChannelNames = [];
 	var liveChannelObjects = [];
 	var liveObject = "";
 	var offlineChannels = [];
 	var offlineChannelNames = [];
+	var offlineChannelObjects = [];
+	var offlineObject = "";
 	var streamDetails = [];
 	var channelDetails = [];
 	var html = "";
-
-	function checkChannelNames(val) {
-		for (var i = 0; i < channelNames.length; i++){
-			if (val == channelNames[0]){
-				var shift = channelNames.shift()
-				offlineChannelNames.push(shift);
-			} else {
-				var shift = channelNames.shift()
-				
-				channelNames.push(shift);
-				
-			}
-		}
-	}
+	var filterSubjects = "";
+	var remainingItems = "";
 
 
 	$(document).ready(function () {
@@ -69,13 +59,12 @@
 			liveChannels = streamDetails.filter(function(channel){
 				return(channel.stream != null);
 			});
-			
 		
 			// Attempting to create objects for each live channel
 			for (var i = 0; i < liveChannels.length; i++){
 				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
-				liveObject = { //consider calling it something like liveChannel1, 2, 3...
-					"Name": liveChannels[i].stream.channel.display_name,
+				liveObject = { 
+					"name": liveChannels[i].stream.channel.display_name,
 					"logo": liveChannels[i].stream.channel.logo,
 					"link": liveChannels[i].stream.channel.url,
 					"viewers": liveChannels[i].stream.viewers
@@ -83,39 +72,85 @@
 				liveChannelObjects.push(liveObject);
 			};
 
-			// The inverse of liveChannels does not work becaues I still don't have a channel name
+			// I don't really understand this .includes thing, but this seems to work
+			offlineChannelNames = channelNames.filter(function(item){
+				return !liveChannelNames.includes(item);
+			})
 			
-			for (var j = 0; j < liveChannelNames.length; j++){
-				alert("starting outter for loop...");
-				for (var i = 0; i < channelNames.length; i++){
-					alert("starting inner for loop");
-					if (liveChannelNames[0] == channelNames[0]){
-						alert(channelNames[0] + " was the golden ticket");
-						var shift = channelNames.shift();
-						offlineChannelNames.push(shift);
-						
+			// The outer loop is intended to run for as many offline channels were identified.
+			for (var i = 0; i < offlineChannelNames.length; i++){
+				// The inner loop needs to check each of the channels
+				for (var j = 0; j < channelDetails.length; j++){
+					if (offlineChannelNames[i] == channelDetails[j].display_name){
+							offlineObject = {
+								"name": channelDetails[j].display_name,
+								"logo": channelDetails[j].logo,
+								"link": channelDetails[j].url
+							};
+							offlineChannelObjects.push(offlineObject);
 					} else {
-						alert("shifting " + channelNames[0]);
-						var shift = channelNames.shift();
-						alert ("pushing " + shift);
-						channelNames.push(shift);
+
 					}
 				}
 			}
 			
+			console.log(liveChannelObjects);
+			console.log(offlineChannelObjects);
 			
-
+			// begin all of the HTML assembling to output a nice list of live and offline channels
 			
-			html += "<div>";
+			/* html += "<div class='container-fluid'>";
+				html += "<div class='row'>";
+					html += "<div class='col-md-offset-4 col-md-4'>";
+						// removed the "live channels <p> and just added it in the HTML."
+					html += "</div>";
+				html += "</div>";
+			html += "</div" */
+				
+			// Organize the live channels
 			for (var i = 0; i < liveChannelNames.length; i++) {
-				html += "<p>" + liveChannelNames[i] + "</p>";
+				
+				//Playing with append, but this doesn't seem to work the way I need it
+				// I don't think I can refer to JS variables when using append.
+				/* $("#message").append(
+					<div class="col-md-2">
+						<img style='text-align: center' class='logo' src=liveChannelObjects[i].logo' >
+					</div>
+				) */
+				
+				html += "<div class='container'>"
+					html += "<div class='row'>";
+						
+						//html += "<div class='col-md-3'>";
+							html += "<img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + ">";
+						//html += "</div>";
+						
+						//html += "<div class='col-md-3>";
+							html += "<a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a>";
+						//html+= "</div>";
+						
+						//html += "<div class='col-md-3>"
+							html += "<p>Viewers: " + liveChannelObjects[i].viewers + "</p>"
+						//html += "</div >"
+
+					html += "</div>"
+				html += "</div>"
 			}
-			html += "</div>";
 
+				html += "<div class='row'>"
+					html += "<div class='col-md-offset-5 col-md-2'>"
+						html += "<p style='text-align: center;'>Offline Channels: </p>"
+					html += "</div>"
+				html += "</div>"
+
+			for (var i = 0; i < offlineChannelNames.length; i++){
+				
+				html += "<p>" + offlineChannelNames[i] + "</p>"
+			}
+			html += "</div>"
+			
 			$("#message").html(html);
-			console.log(liveChannelNames);
-			console.log(offlineChannelNames);
-
+			
 		});
 
 	});
@@ -171,16 +206,21 @@
 
     <body>
         
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3" style="text-align: center">
-                    
-                    <p id="message" class="well">This is where the message goes</p>
+        <div class="container">
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8 well">
+					<p style='text-align: center;'> Live Channels:</p>
+					<p id="message">This is where the message goes</p>
+					<!-- <p style="text-align:center;">Offline Channels</p> -->
+				</div>
+				
+				
+				
+				<div class="col-md-offset-5 col-md-2">
 					<button id="getMessage" class="btn btn-primary">CLICK MEH</button>
-					<button id="getOnline" class="btn btn-primary">NO CLICK MEH</button>
-
-                </div>
-            </div>
+				</div>
+				</div>
+			</div>
         </div>
 
 
@@ -195,5 +235,11 @@
 	.streamer {
 		color: black;
 		text-align: left;
+	}
+
+	.logo {
+		width: 50px;
+		height: 50px;
+		border-radius: 10px;
 	}
 </style>
