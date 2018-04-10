@@ -103,10 +103,10 @@
 			html += "<table class='table'>"
 				html += "<thead>"
 					html += "<tr>"
-						html += "<th>Logo</th>"
-						html += "<th>Name</th>"
-						html += "<th>Viewers</th>"
+						html += "<th></th>"
+						html += "<th>Channel</th>"
 						html += "<th>Status</th>"
+						html += "<th>Viewers</th>"
 					html += "</tr>"
 				html += "</thead>"
 				html += "<tbody>"
@@ -114,19 +114,19 @@
 					html += "<tr>"
 						html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
 						html += "<td><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
+						html += "<td><div class='live'></div></td>"
 						html += "<td><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
-						html += "<td><div class='status-live'></div></td>"
+						//html += "<td><div style='width:25px; height: 25px; border-radius: 50%; background-color: green;'></div></td>"
 					html += "</tr>"
 			}
-			
-				/* html += "<h2 style='text-align: center;'>Offline Channels: </h2>" */
 					
 			for (var i = 0; i < offlineChannelNames.length; i++){
 				html += "<tr>"
 					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
 					html += "<td><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
+					html += "<td><div class='offline'></div></td>"
 					html += "<td></td>"
-					html += "<td></td>"
+					//html += "<td><div style='width: 25px; height: 25px; border-radius: 50%; background-color: red;'</div></td>"
 				html += "</tr>"
 			}
 			html += "</tbody>"
@@ -139,52 +139,7 @@
 	});
 			
 		
-		/* $("#getMessage").on("click", function() {
-			
-			html = "";
-			
-			
-
-			for (var i = 0; i < channelNames.length; i++) {
-				
-				
-				$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
-
-					console.log(streamData);
-
-					if (streamData.stream != null) {	
-						html += "<div class='streamer'>"
-						html += "<img src= '" + streamData.stream.channel.logo + "'" + "height='50' width='50'>";
-						html += "<p>" + streamData.stream.channel.display_name + "</p>";
-						html += "<p>Viewers: " + streamData.stream.viewers + "</p>";
-						if (streamData.stream.channel.mature == true) {
-							html += "<p>Mature Channel: yes</p>";
-						} else {
-							html += "<p>Mature Channel: no</p>";
-						}
-						html += "<a href='" + streamData.stream.channel.url + "'>" + streamData.stream.channel.status + "</a>";
-						html += "<p>Live now!</p>";
-						html += "</div>";
-
-						$("#message").html(html);
-				
-					} else {
-						//alert(i);
-						//alert(channelNames[i]);
-						$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
-							html += "<div class='streamer'>"
-							html += "<img src= '" + channelData.logo + "'" + "height='50' width='50'>";
-							html += "<p>" + channelData.display_name + "</p>";
-							html += "<p>Offline</p>"
-							html += "<p>Followers: " + channelData.followers + "</p>";
-							$("#message").html(html);
-						});
-					}		
-				
-				});
-			};
-		}); */
-
+		
 </script>
 
     <body>
@@ -196,16 +151,15 @@
 				</div>
 				
 				<div class="col-md-offset-2 col-md-8 well">
-					<!-- <p style='text-align: center;'> Live Channels:</p> -->
+					
 					<p id="message">This is where the message goes</p>
-					<!-- <p style="text-align:center;">Offline Channels</p> -->
+					
 				</div>
 				
 				
 				</div>
 			</div>
         </div>
-
 
     </body>
 
@@ -225,11 +179,17 @@
 		height: 50px;
 		border-radius: 10px;
 	}
-	.status {
+	.live {
 		height: 25px;
 		width: 25px;
 		border-radius: 50%;
 		background-color: green;
-		display: none;
 	}
+	.offline {
+		height: 25px;
+		width: 25px;
+		border-radius: 50%;
+		background-color: red;
+	}
+
 </style>
