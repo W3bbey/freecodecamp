@@ -124,7 +124,7 @@
 				html += "<tr>"
 					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
 					html += "<td><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
-					html += "<td><div class='offline'></div></td>"
+					html += "<td align:'center'><div class='offline'></div></td>"
 					html += "<td></td>"
 					//html += "<td><div style='width: 25px; height: 25px; border-radius: 50%; background-color: red;'</div></td>"
 				html += "</tr>"
@@ -133,7 +133,7 @@
 			html += "</table>"
 
 			$("#message").html(html);
-			
+			html = "";
 		});
 
 	});
@@ -183,6 +183,8 @@
 		height: 25px;
 		width: 25px;
 		border-radius: 50%;
+		/*border: 2px solid green;
+		box-shadow: inset 0 0 0 2px white;*/
 		background-color: green;
 	}
 	.offline {
@@ -190,6 +192,11 @@
 		width: 25px;
 		border-radius: 50%;
 		background-color: red;
+		
 	}
-
+	
+	/*td {
+  		text-align: center;
+  		vertical-align: middle;
+	}*/
 </style>
