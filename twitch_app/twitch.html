@@ -98,57 +98,40 @@
 			console.log(offlineChannelObjects);
 			
 			// begin all of the HTML assembling to output a nice list of live and offline channels
-			
-			/* html += "<div class='container-fluid'>";
-				html += "<div class='row'>";
-					html += "<div class='col-md-offset-4 col-md-4'>";
-						// removed the "live channels <p> and just added it in the HTML."
-					html += "</div>";
-				html += "</div>";
-			html += "</div" */
-				
 			// Organize the live channels
+			/* html += "<h2 style='text-align:center'>Live Channels</h2>" */
+			html += "<table class='table'>"
+				html += "<thead>"
+					html += "<tr>"
+						html += "<th>Logo</th>"
+						html += "<th>Name</th>"
+						html += "<th>Viewers</th>"
+						html += "<th>Status</th>"
+					html += "</tr>"
+				html += "</thead>"
+				html += "<tbody>"
 			for (var i = 0; i < liveChannelNames.length; i++) {
-				
-				//Playing with append, but this doesn't seem to work the way I need it
-				// I don't think I can refer to JS variables when using append.
-				/* $("#message").append(
-					<div class="col-md-2">
-						<img style='text-align: center' class='logo' src=liveChannelObjects[i].logo' >
-					</div>
-				) */
-				
-				html += "<div class='container'>"
-					html += "<div class='row'>";
-						
-						//html += "<div class='col-md-3'>";
-							html += "<img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + ">";
-						//html += "</div>";
-						
-						//html += "<div class='col-md-3>";
-							html += "<a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a>";
-						//html+= "</div>";
-						
-						//html += "<div class='col-md-3>"
-							html += "<p>Viewers: " + liveChannelObjects[i].viewers + "</p>"
-						//html += "</div >"
-
-					html += "</div>"
-				html += "</div>"
+					html += "<tr>"
+						html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
+						html += "<td><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
+						html += "<td><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
+						html += "<td><div class='status-live'></div></td>"
+					html += "</tr>"
 			}
-
-				html += "<div class='row'>"
-					html += "<div class='col-md-offset-5 col-md-2'>"
-						html += "<p style='text-align: center;'>Offline Channels: </p>"
-					html += "</div>"
-				html += "</div>"
-
-			for (var i = 0; i < offlineChannelNames.length; i++){
-				
-				html += "<p>" + offlineChannelNames[i] + "</p>"
-			}
-			html += "</div>"
 			
+				/* html += "<h2 style='text-align: center;'>Offline Channels: </h2>" */
+					
+			for (var i = 0; i < offlineChannelNames.length; i++){
+				html += "<tr>"
+					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
+					html += "<td><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
+					html += "<td></td>"
+					html += "<td></td>"
+				html += "</tr>"
+			}
+			html += "</tbody>"
+			html += "</table>"
+
 			$("#message").html(html);
 			
 		});
@@ -208,17 +191,17 @@
         
         <div class="container">
 			<div class="row">
+				<div class="col-md-offset-5 col-md-2">
+					<button id="getMessage" class="btn btn-primary">CLICK MEH</button>
+				</div>
+				
 				<div class="col-md-offset-2 col-md-8 well">
-					<p style='text-align: center;'> Live Channels:</p>
+					<!-- <p style='text-align: center;'> Live Channels:</p> -->
 					<p id="message">This is where the message goes</p>
 					<!-- <p style="text-align:center;">Offline Channels</p> -->
 				</div>
 				
 				
-				
-				<div class="col-md-offset-5 col-md-2">
-					<button id="getMessage" class="btn btn-primary">CLICK MEH</button>
-				</div>
 				</div>
 			</div>
         </div>
@@ -241,5 +224,12 @@
 		width: 50px;
 		height: 50px;
 		border-radius: 10px;
+	}
+	.status {
+		height: 25px;
+		width: 25px;
+		border-radius: 50%;
+		background-color: green;
+		display: none;
 	}
 </style>
