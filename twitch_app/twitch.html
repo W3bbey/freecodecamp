@@ -37,6 +37,7 @@
 
 	$(document).ready(function () {
 
+		
 
 		// how about a button to get the status rather than document.ready?
 		for (var i = 0; i < channelNames.length;i++) {
@@ -72,6 +73,8 @@
 				liveChannelObjects.push(liveObject);
 			};
 
+			console.log(liveChannelObjects);
+
 			// I don't really understand this .includes thing, but this seems to work
 			offlineChannelNames = channelNames.filter(function(item){
 				return !liveChannelNames.includes(item);
@@ -94,18 +97,14 @@
 				}
 			}
 			
-			console.log(liveChannelObjects);
-			console.log(offlineChannelObjects);
-			
 			// begin all of the HTML assembling to output a nice list of live and offline channels
 			// Organize the live channels
-			/* html += "<h2 style='text-align:center'>Live Channels</h2>" */
 			html += "<table class='table'>"
 				html += "<thead>"
 					html += "<tr>"
 						html += "<th></th>"
 						html += "<th>Channel</th>"
-						html += "<th>Status</th>"
+						html += "<th style='text-align:center'>Status</th>"
 						html += "<th>Viewers</th>"
 					html += "</tr>"
 				html += "</thead>"
@@ -113,18 +112,18 @@
 			for (var i = 0; i < liveChannelNames.length; i++) {
 					html += "<tr>"
 						html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
-						html += "<td><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
-						html += "<td><div class='live'></div></td>"
-						html += "<td><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
+						html += "<td style='vertical-align: middle;'><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
+						html += "<td style='vertical-align: middle;'><div class='live'></div></td>"
+						html += "<td style='vertical-align: middle;'><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
 						//html += "<td><div style='width:25px; height: 25px; border-radius: 50%; background-color: green;'></div></td>"
 					html += "</tr>"
 			}
-					
+			// organize the offline channels		
 			for (var i = 0; i < offlineChannelNames.length; i++){
 				html += "<tr>"
 					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
-					html += "<td><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
-					html += "<td align:'center'><div class='offline'></div></td>"
+					html += "<td style='vertical-align: middle;'><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
+					html += "<td style='vertical-align: middle;'><div class='offline'></div></td>"
 					html += "<td></td>"
 					//html += "<td><div style='width: 25px; height: 25px; border-radius: 50%; background-color: red;'</div></td>"
 				html += "</tr>"
@@ -134,11 +133,12 @@
 
 			$("#message").html(html);
 			html = "";
+			
+			// liveChannelObjects = ""; //this breaks the process by creating an error
+			
 		});
 
 	});
-			
-		
 		
 </script>
 
@@ -147,7 +147,7 @@
         <div class="container">
 			<div class="row">
 				<div class="col-md-offset-5 col-md-2">
-					<button id="getMessage" class="btn btn-primary">CLICK MEH</button>
+					<button style="text-align: center;" id="getMessage" class="btn btn-primary">CLICK MEH</button>
 				</div>
 				
 				<div class="col-md-offset-2 col-md-8 well">
@@ -155,7 +155,6 @@
 					<p id="message">This is where the message goes</p>
 					
 				</div>
-				
 				
 				</div>
 			</div>
@@ -183,20 +182,19 @@
 		height: 25px;
 		width: 25px;
 		border-radius: 50%;
-		/*border: 2px solid green;
-		box-shadow: inset 0 0 0 2px white;*/
 		background-color: green;
+		margin-left: auto;
+		margin-right: auto;
+		
 	}
 	.offline {
 		height: 25px;
 		width: 25px;
 		border-radius: 50%;
 		background-color: red;
+		margin-left: auto;
+		margin-right: auto;
 		
 	}
 	
-	/*td {
-  		text-align: center;
-  		vertical-align: middle;
-	}*/
 </style>
