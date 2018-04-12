@@ -37,27 +37,8 @@
 
 	$(document).ready(function () {
 
-		
-
-		// how about a button to get the status rather than document.ready?
-		for (var i = 0; i < channelNames.length;i++) {
-			
-			$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
-				
-				streamDetails.push(streamData);
-				
-			});
-			
-			$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
-				
-				channelDetails.push(channelData);
-			});
-		}
-		
-		$("#getMessage").on("click", function() {
-			
-			// These are the live channels, but it contains all the data
-			liveChannels = streamDetails.filter(function(channel){
+		// These are the live channels, but it contains all the data
+		liveChannels = streamDetails.filter(function(channel){
 				return(channel.stream != null);
 			});
 		
@@ -73,7 +54,6 @@
 				liveChannelObjects.push(liveObject);
 			};
 
-			console.log(liveChannelObjects);
 
 			// I don't really understand this .includes thing, but this seems to work
 			offlineChannelNames = channelNames.filter(function(item){
@@ -115,7 +95,6 @@
 						html += "<td style='vertical-align: middle;'><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
 						html += "<td style='vertical-align: middle;'><div class='live'></div></td>"
 						html += "<td style='vertical-align: middle;'><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
-						//html += "<td><div style='width:25px; height: 25px; border-radius: 50%; background-color: green;'></div></td>"
 					html += "</tr>"
 			}
 			// organize the offline channels		
@@ -125,18 +104,111 @@
 					html += "<td style='vertical-align: middle;'><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
 					html += "<td style='vertical-align: middle;'><div class='offline'></div></td>"
 					html += "<td></td>"
-					//html += "<td><div style='width: 25px; height: 25px; border-radius: 50%; background-color: red;'</div></td>"
 				html += "</tr>"
 			}
 			html += "</tbody>"
 			html += "</table>"
 
 			$("#message").html(html);
-			html = "";
 			
-			// liveChannelObjects = ""; //this breaks the process by creating an error
+			//html = "";
+			//liveChannelObjects = ""; //this breaks the process by creating an error
+
+		// how about a button to get the status rather than document.ready?
+		for (var i = 0; i < channelNames.length;i++) {
 			
-		});
+			$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
+				
+				streamDetails.push(streamData);
+				
+			});
+			
+			$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
+				
+				channelDetails.push(channelData);
+			});
+		}
+		
+		/* $("#getMessage").on("click", function() {
+			
+			// These are the live channels, but it contains all the data
+			liveChannels = streamDetails.filter(function(channel){
+				return(channel.stream != null);
+			});
+		
+			// Attempting to create objects for each live channel
+			for (var i = 0; i < liveChannels.length; i++){
+				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
+				liveObject = { 
+					"name": liveChannels[i].stream.channel.display_name,
+					"logo": liveChannels[i].stream.channel.logo,
+					"link": liveChannels[i].stream.channel.url,
+					"viewers": liveChannels[i].stream.viewers
+				};
+				liveChannelObjects.push(liveObject);
+			};
+
+
+			// I don't really understand this .includes thing, but this seems to work
+			offlineChannelNames = channelNames.filter(function(item){
+				return !liveChannelNames.includes(item);
+			})
+			
+			// The outer loop is intended to run for as many offline channels were identified.
+			for (var i = 0; i < offlineChannelNames.length; i++){
+				// The inner loop needs to check each of the channels
+				for (var j = 0; j < channelDetails.length; j++){
+					if (offlineChannelNames[i] == channelDetails[j].display_name){
+							offlineObject = {
+								"name": channelDetails[j].display_name,
+								"logo": channelDetails[j].logo,
+								"link": channelDetails[j].url
+							};
+							offlineChannelObjects.push(offlineObject);
+					} else {
+
+					}
+				}
+			}
+			
+			// begin all of the HTML assembling to output a nice list of live and offline channels
+			// Organize the live channels
+			html += "<table class='table'>"
+				html += "<thead>"
+					html += "<tr>"
+						html += "<th></th>"
+						html += "<th>Channel</th>"
+						html += "<th style='text-align:center'>Status</th>"
+						html += "<th>Viewers</th>"
+					html += "</tr>"
+				html += "</thead>"
+				html += "<tbody>"
+			for (var i = 0; i < liveChannelNames.length; i++) {
+					html += "<tr>"
+						html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
+						html += "<td style='vertical-align: middle;'><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
+						html += "<td style='vertical-align: middle;'><div class='live'></div></td>"
+						html += "<td style='vertical-align: middle;'><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
+					html += "</tr>"
+			}
+			// organize the offline channels		
+			for (var i = 0; i < offlineChannelNames.length; i++){
+				html += "<tr>"
+					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
+					html += "<td style='vertical-align: middle;'><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
+					html += "<td style='vertical-align: middle;'><div class='offline'></div></td>"
+					html += "<td></td>"
+				html += "</tr>"
+			}
+			html += "</tbody>"
+			html += "</table>"
+
+			$("#message").html(html);
+			
+			//html = "";
+			//liveChannelObjects = ""; //this breaks the process by creating an error
+			
+		}); */
 
 	});
 		
