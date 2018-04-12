@@ -103,9 +103,9 @@
 				html += "<thead>"
 					html += "<tr>"
 						html += "<th></th>"
-						html += "<th>Channel</th>"
-						html += "<th style='text-align:center'>Status</th>"
-						html += "<th>Viewers</th>"
+						html += "<th style='text-align: center'>Channel</th>"
+						html += "<th style='text-align: center'>Status</th>"
+						html += "<th style='text-align: center'>Viewers</th>"
 					html += "</tr>"
 				html += "</thead>"
 				html += "<tbody>"
@@ -119,6 +119,7 @@
 					html += "</tr>"
 			}
 			// organize the offline channels		
+			console.log(offlineChannelObjects);
 			for (var i = 0; i < offlineChannelNames.length; i++){
 				html += "<tr>"
 					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
@@ -146,13 +147,13 @@
         
         <div class="container">
 			<div class="row">
-				<div class="col-md-offset-5 col-md-2">
-					<button style="text-align: center;" id="getMessage" class="btn btn-primary">CLICK MEH</button>
+				<div style="text-align: center">
+					<button id="getMessage" class="btn btn-primary" style="margin: 10px 0px 10px 0px;">CLICK MEH</button>
 				</div>
 				
 				<div class="col-md-offset-2 col-md-8 well">
 					
-					<p id="message">This is where the message goes</p>
+					<p id="message" style="text-align: center">Click to get status</p>
 					
 				</div>
 				
