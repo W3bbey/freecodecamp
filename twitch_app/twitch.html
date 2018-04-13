@@ -37,11 +37,14 @@
 
 	$(document).ready(function () {
 
-		// These are the live channels, but it contains all the data
-		liveChannels = streamDetails.filter(function(channel){
+		
+		function checkTwitchChannels(){
+
+			// These are the live channels, but it contains all the data
+			liveChannels = streamDetails.filter(function(channel){
 				return(channel.stream != null);
 			});
-		
+
 			// Attempting to create objects for each live channel
 			for (var i = 0; i < liveChannels.length; i++){
 				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
@@ -59,7 +62,7 @@
 			offlineChannelNames = channelNames.filter(function(item){
 				return !liveChannelNames.includes(item);
 			})
-			
+
 			// The outer loop is intended to run for as many offline channels were identified.
 			for (var i = 0; i < offlineChannelNames.length; i++){
 				// The inner loop needs to check each of the channels
@@ -76,16 +79,16 @@
 					}
 				}
 			}
-			
+
 			// begin all of the HTML assembling to output a nice list of live and offline channels
 			// Organize the live channels
 			html += "<table class='table'>"
 				html += "<thead>"
 					html += "<tr>"
 						html += "<th></th>"
-						html += "<th>Channel</th>"
-						html += "<th style='text-align:center'>Status</th>"
-						html += "<th>Viewers</th>"
+						html += "<th style='text-align: center'>Channel</th>"
+						html += "<th style='text-align: center'>Status</th>"
+						html += "<th style='text-align: center'>Viewers</th>"
 					html += "</tr>"
 				html += "</thead>"
 				html += "<tbody>"
@@ -98,6 +101,7 @@
 					html += "</tr>"
 			}
 			// organize the offline channels		
+			console.log(offlineChannelObjects);
 			for (var i = 0; i < offlineChannelNames.length; i++){
 				html += "<tr>"
 					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
@@ -111,9 +115,9 @@
 
 			$("#message").html(html);
 			
-			//html = "";
-			//liveChannelObjects = ""; //this breaks the process by creating an error
-
+		};
+		
+		
 		// how about a button to get the status rather than document.ready?
 		for (var i = 0; i < channelNames.length;i++) {
 			
@@ -129,9 +133,13 @@
 			});
 		}
 		
-		/* $("#getMessage").on("click", function() {
+		$("#getMessage").on("click", function() {
 			
-			// These are the live channels, but it contains all the data
+		checkTwitchChannels()
+
+		});
+	});
+			/* // These are the live channels, but it contains all the data
 			liveChannels = streamDetails.filter(function(channel){
 				return(channel.stream != null);
 			});
@@ -205,13 +213,14 @@
 			html += "</table>"
 
 			$("#message").html(html);
-			
+			$("#message").html("");		
 			//html = "";
 			//liveChannelObjects = ""; //this breaks the process by creating an error
 			
 		}); */
+		//}
 
-	});
+	//});
 		
 </script>
 
