@@ -1,282 +1,210 @@
-<!DOCTYPE html>
-<head>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<!DOCTYPE html>
+	<head>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</head>
 
-<html>
-    
-<script>
-	
-	// Global vars
-
-	// Channel names in the following array must match case with the display name that will be pulled later
-	var channelNames = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "FreeCodeCamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
-	var liveChannels = [];
-	var liveChannelNames = [];
-	var liveChannelObjects = [];
-	var liveObject = "";
-	var offlineChannels = [];
-	var offlineChannelNames = [];
-	var offlineChannelObjects = [];
-	var offlineObject = "";
-	var streamDetails = [];
-	var channelDetails = [];
-	var html = "";
-	var filterSubjects = "";
-	var remainingItems = "";
-
-
-	$(document).ready(function () {
-
+	<html>
 		
-		function checkTwitchChannels(){
+	<script>
+		
+		// Global vars
 
-			// These are the live channels, but it contains all the data
-			liveChannels = streamDetails.filter(function(channel){
-				return(channel.stream != null);
-			});
+		// Channel names in the following array must match case with the display name that will be pulled later
+		var channelNames = ["NoObjectiveGamingAU", "ESL_SC2", "OgamingSC2", "cretetion", "FreeCodeCamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"];
+		var liveChannels = [];
+		var liveChannelNames = [];
+		var liveChannelObjects = [];
+		var liveObject = "";
+		var offlineChannels = [];
+		var offlineChannelNames = [];
+		var offlineChannelObjects = [];
+		var offlineObject = "";
+		var streamDetails = [];
+		var channelDetails = [];
+		var html = "";
+		var filterSubjects = "";
+		var remainingItems = "";
 
-			// Attempting to create objects for each live channel
-			for (var i = 0; i < liveChannels.length; i++){
-				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
-				liveObject = { 
-					"name": liveChannels[i].stream.channel.display_name,
-					"logo": liveChannels[i].stream.channel.logo,
-					"link": liveChannels[i].stream.channel.url,
-					"viewers": liveChannels[i].stream.viewers
+
+		$(document).ready(function () {
+
+			
+			function checkTwitchChannels(){
+
+				// These are the live channels, but it contains all the data
+				liveChannels = streamDetails.filter(function(channel){
+					return(channel.stream != null);
+				});
+
+				// Attempting to create objects for each live channel
+				for (var i = 0; i < liveChannels.length; i++){
+					liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
+					liveObject = { 
+						"name": liveChannels[i].stream.channel.display_name,
+						"logo": liveChannels[i].stream.channel.logo,
+						"link": liveChannels[i].stream.channel.url,
+						"viewers": liveChannels[i].stream.viewers
+					};
+					liveChannelObjects.push(liveObject);
 				};
-				liveChannelObjects.push(liveObject);
-			};
 
 
-			// I don't really understand this .includes thing, but this seems to work
-			offlineChannelNames = channelNames.filter(function(item){
-				return !liveChannelNames.includes(item);
-			})
+				// I don't really understand this .includes thing, but this seems to work
+				offlineChannelNames = channelNames.filter(function(item){
+					return !liveChannelNames.includes(item);
+				})
 
-			// The outer loop is intended to run for as many offline channels were identified.
-			for (var i = 0; i < offlineChannelNames.length; i++){
-				// The inner loop needs to check each of the channels
-				for (var j = 0; j < channelDetails.length; j++){
-					if (offlineChannelNames[i] == channelDetails[j].display_name){
-							offlineObject = {
-								"name": channelDetails[j].display_name,
-								"logo": channelDetails[j].logo,
-								"link": channelDetails[j].url
-							};
-							offlineChannelObjects.push(offlineObject);
-					} else {
+				// The outer loop is intended to run for as many offline channels were identified.
+				for (var i = 0; i < offlineChannelNames.length; i++){
+					// The inner loop needs to check each of the channels
+					for (var j = 0; j < channelDetails.length; j++){
+						if (offlineChannelNames[i] == channelDetails[j].display_name){
+								offlineObject = {
+									"name": channelDetails[j].display_name,
+									"logo": channelDetails[j].logo,
+									"link": channelDetails[j].url
+								};
+								offlineChannelObjects.push(offlineObject);
+						} else {
 
+						}
 					}
 				}
-			}
 
-			// begin all of the HTML assembling to output a nice list of live and offline channels
-			// Organize the live channels
-			html += "<table class='table'>"
-				html += "<thead>"
+				// begin all of the HTML assembling to output a nice list of live and offline channels
+				// Organize the live channels
+				html += "<table class='table'>"
+					html += "<thead>"
+						html += "<tr>"
+							html += "<th></th>"
+							html += "<th style='text-align: center'>Channel</th>"
+							html += "<th style='text-align: center'>Status</th>"
+							html += "<th style='text-align: center'>Viewers</th>"
+						html += "</tr>"
+					html += "</thead>"
+					html += "<tbody>"
+				for (var i = 0; i < liveChannelNames.length; i++) {
+						html += "<tr>"
+							html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
+							html += "<td style='vertical-align: middle;'><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
+							html += "<td style='vertical-align: middle;'><div class='live'></div></td>"
+							html += "<td style='vertical-align: middle;'><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
+						html += "</tr>"
+				}
+				// organize the offline channels		
+				console.log(offlineChannelObjects);
+				for (var i = 0; i < offlineChannelNames.length; i++){
 					html += "<tr>"
-						html += "<th></th>"
-						html += "<th style='text-align: center'>Channel</th>"
-						html += "<th style='text-align: center'>Status</th>"
-						html += "<th style='text-align: center'>Viewers</th>"
+						html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
+						html += "<td style='vertical-align: middle;'><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
+						html += "<td style='vertical-align: middle;'><div class='offline'></div></td>"
+						html += "<td></td>"
 					html += "</tr>"
-				html += "</thead>"
-				html += "<tbody>"
-			for (var i = 0; i < liveChannelNames.length; i++) {
-					html += "<tr>"
-						html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
-						html += "<td style='vertical-align: middle;'><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
-						html += "<td style='vertical-align: middle;'><div class='live'></div></td>"
-						html += "<td style='vertical-align: middle;'><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
-					html += "</tr>"
-			}
-			// organize the offline channels		
-			console.log(offlineChannelObjects);
-			for (var i = 0; i < offlineChannelNames.length; i++){
-				html += "<tr>"
-					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
-					html += "<td style='vertical-align: middle;'><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
-					html += "<td style='vertical-align: middle;'><div class='offline'></div></td>"
-					html += "<td></td>"
-				html += "</tr>"
-			}
-			html += "</tbody>"
-			html += "</table>"
+				}
+				html += "</tbody>"
+				html += "</table>"
 
-			$("#message").html(html);
-			
-		};
-		
-		
-		// how about a button to get the status rather than document.ready?
-		for (var i = 0; i < channelNames.length;i++) {
-			
-			$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
-				
-				streamDetails.push(streamData);
-				
-			});
-			
-			$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
-				
-				channelDetails.push(channelData);
-			});
-		}
-		
-		$("#getMessage").on("click", function() {
-			
-		checkTwitchChannels()
 
+				$("#message").html("").append(html);
+				
+			};
+			
+			
+			// how about a button to get the status rather than document.ready?
+			for (var i = 0; i < channelNames.length;i++) {
+				
+				$.getJSON('https://wind-bow.glitch.me/twitch-api/streams/' + channelNames[i], function(streamData) {
+					
+					streamDetails.push(streamData);
+					
+				});
+				
+				$.getJSON('https://wind-bow.glitch.me/twitch-api/channels/' + channelNames[i], function(channelData) {
+					
+					channelDetails.push(channelData);
+				});
+			}
+			
+
+			// Where the magic happens
+			$("#getMessage").on("click", function() {
+		
+				checkTwitchChannels();
+
+			});
+
+			$("#clearMessage").on("click",function() {
+				html = "";
+				$("#message").html(" ");
+			})
 		});
-	});
-			/* // These are the live channels, but it contains all the data
-			liveChannels = streamDetails.filter(function(channel){
-				return(channel.stream != null);
-			});
-		
-			// Attempting to create objects for each live channel
-			for (var i = 0; i < liveChannels.length; i++){
-				liveChannelNames.push(liveChannels[i].stream.channel.display_name) // this is what I was doing to get the live channel to an array
-				liveObject = { 
-					"name": liveChannels[i].stream.channel.display_name,
-					"logo": liveChannels[i].stream.channel.logo,
-					"link": liveChannels[i].stream.channel.url,
-					"viewers": liveChannels[i].stream.viewers
-				};
-				liveChannelObjects.push(liveObject);
-			};
-
-
-			// I don't really understand this .includes thing, but this seems to work
-			offlineChannelNames = channelNames.filter(function(item){
-				return !liveChannelNames.includes(item);
-			})
 			
-			// The outer loop is intended to run for as many offline channels were identified.
-			for (var i = 0; i < offlineChannelNames.length; i++){
-				// The inner loop needs to check each of the channels
-				for (var j = 0; j < channelDetails.length; j++){
-					if (offlineChannelNames[i] == channelDetails[j].display_name){
-							offlineObject = {
-								"name": channelDetails[j].display_name,
-								"logo": channelDetails[j].logo,
-								"link": channelDetails[j].url
-							};
-							offlineChannelObjects.push(offlineObject);
-					} else {
-
-					}
-				}
-			}
 			
-			// begin all of the HTML assembling to output a nice list of live and offline channels
-			// Organize the live channels
-			html += "<table class='table'>"
-				html += "<thead>"
-					html += "<tr>"
-						html += "<th></th>"
-						html += "<th style='text-align: center'>Channel</th>"
-						html += "<th style='text-align: center'>Status</th>"
-						html += "<th style='text-align: center'>Viewers</th>"
-					html += "</tr>"
-				html += "</thead>"
-				html += "<tbody>"
-			for (var i = 0; i < liveChannelNames.length; i++) {
-					html += "<tr>"
-						html += "<td><img style='text-align: center' class='logo' src='" + liveChannelObjects[i].logo + "'" + "></td>";
-						html += "<td style='vertical-align: middle;'><a href='" + liveChannelObjects[i].link + "'>" + liveChannelObjects[i].name + "</a></td>";
-						html += "<td style='vertical-align: middle;'><div class='live'></div></td>"
-						html += "<td style='vertical-align: middle;'><p>Viewers: " + liveChannelObjects[i].viewers + "</p></td>"
-					html += "</tr>"
-			}
-			// organize the offline channels		
-			console.log(offlineChannelObjects);
-			for (var i = 0; i < offlineChannelNames.length; i++){
-				html += "<tr>"
-					html += "<td><img class='logo' src='" + offlineChannelObjects[i].logo + "'></td>"
-					html += "<td style='vertical-align: middle;'><a href='" + offlineChannelObjects[i].link + "'>" + offlineChannelObjects[i].name + "</a></td>"
-					html += "<td style='vertical-align: middle;'><div class='offline'></div></td>"
-					html += "<td></td>"
-				html += "</tr>"
-			}
-			html += "</tbody>"
-			html += "</table>"
+	</script>
 
-			$("#message").html(html);
-			$("#message").html("");		
-			//html = "";
-			//liveChannelObjects = ""; //this breaks the process by creating an error
+		<body>
 			
-		}); */
-		//}
-
-	//});
-		
-</script>
-
-    <body>
-        
-        <div class="container">
-			<div class="row">
-				<div style="text-align: center">
-					<button id="getMessage" class="btn btn-primary" style="margin: 10px 0px 10px 0px;">CLICK MEH</button>
-				</div>
-				
-				<div class="col-md-offset-2 col-md-8 well">
+			<div class="container">
+				<div class="row">
+					<div style="text-align: center">
+						<button id="getMessage" class="btn btn-primary" style="margin: 10px 0px 10px 0px;">CLICK MEH</button>
+						<button id="clearMessage" class="btn btn-primary" style="margin: 10px 0px 10px 0px;">CLEAR</button>
+					</div>
 					
-					<p id="message" style="text-align: center">Click to get status</p>
+					<div id="messageContainer" class="col-md-offset-2 col-md-8 well">
+						
+						<p id="message" style="text-align: center">Click to get status</p>
+						
+					</div>
 					
-				</div>
-				
+					</div>
 				</div>
 			</div>
-        </div>
 
-    </body>
-
-
-</html>
+		</body>
 
 
+	</html>
 
-<style>
-	.streamer {
-		color: black;
-		text-align: left;
-	}
 
-	.logo {
-		width: 50px;
-		height: 50px;
-		border-radius: 10px;
-	}
-	.live {
-		height: 25px;
-		width: 25px;
-		border-radius: 50%;
-		background-color: green;
-		margin-left: auto;
-		margin-right: auto;
+
+	<style>
+		.streamer {
+			color: black;
+			text-align: left;
+		}
+
+		.logo {
+			width: 50px;
+			height: 50px;
+			border-radius: 10px;
+		}
+		.live {
+			height: 25px;
+			width: 25px;
+			border-radius: 50%;
+			background-color: green;
+			margin-left: auto;
+			margin-right: auto;
+			
+		}
+		.offline {
+			height: 25px;
+			width: 25px;
+			border-radius: 50%;
+			background-color: red;
+			margin-left: auto;
+			margin-right: auto;
+			
+		}
 		
-	}
-	.offline {
-		height: 25px;
-		width: 25px;
-		border-radius: 50%;
-		background-color: red;
-		margin-left: auto;
-		margin-right: auto;
-		
-	}
-	
-</style>
+	</style>
